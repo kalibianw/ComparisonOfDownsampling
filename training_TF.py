@@ -4,12 +4,13 @@ import numpy as np
 import shutil
 import os
 
-COLOR_MODE = "rgb"
+COLOR_MODE = "gray"
 OUTPUT_LABEL_CNT = 2
-NPZ_PATH = f"npz/cats_dogs_{COLOR_MODE}.npz"
-CKPT_PATH = f"D:/AI/ckpt/DAG/DAG_{COLOR_MODE}.ckpt"
-MODEL_PATH = f"D:/AI/model/DAG/DAG_{COLOR_MODE}.h5"
-LOG_DIR_PATH = f"logs/DAG_{COLOR_MODE}/"
+FNAME = f"normalized_cats_dogs_{COLOR_MODE}"
+NPZ_PATH = f"npz/{FNAME}.npz"
+CKPT_PATH = f"D:/AI/ckpt/DAG/{FNAME}.ckpt"
+MODEL_PATH = f"D:/AI/model/DAG/{FNAME}.h5"
+LOG_DIR_PATH = f"logs/{FNAME}/"
 if os.path.exists(LOG_DIR_PATH):
     shutil.rmtree(LOG_DIR_PATH)
     os.makedirs(LOG_DIR_PATH)
@@ -21,6 +22,11 @@ EPOCHS = 1000
 nphandler = np.load(NPZ_PATH)
 x_train, x_valid, x_test, y_train, y_valid, y_test = nphandler["x_train"], nphandler["x_valid"], nphandler["x_test"], \
                                                      nphandler["y_train"], nphandler["y_valid"], nphandler["y_test"]
+
+if COLOR_MODE == "gray":
+    x_train, x_valid, x_test = np.expand_dims(x_train, axis=-1), \
+                               np.expand_dims(x_valid, axis=-1), \
+                               np.expand_dims(x_test, axis=-1)
 
 print(np.shape(x_train), np.shape(x_valid), np.shape(x_test),
       np.shape(y_train), np.shape(y_valid), np.shape(y_test))
@@ -41,7 +47,6 @@ tm = TrainModule(input_shape=np.shape(x_train)[1:], output_shape=OUTPUT_LABEL_CN
 
 model = tm.create_model()
 model.summary()
-plot_model(model, to_file="model.png", show_shapes=True, show_dtype=True, dpi=300)
 
 hist = tm.model_training(
     model=model,
