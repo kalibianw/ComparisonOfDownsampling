@@ -49,7 +49,7 @@ class DataModule:
             if fidx % int(per) == 0:
                 print(f"{fidx / int(per)}% 완료")
 
-        imgs = np.array(imgs)
+        imgs = np.array(imgs) / 255.0
         labels = np.array(labels)
 
         print(np.shape(imgs), np.shape(labels))
