@@ -253,6 +253,7 @@ class TrainModule:
             callbacks.ModelCheckpoint(filepath=self.CKPT_PATH, verbose=1, save_best_only=True, save_weights_only=True),
             callbacks.TensorBoard(log_dir=self.LOG_DIR_PATH)
         ]
+
         hist = model.fit(
             x=x_train, y=y_train,
             batch_size=self.BATCH_SIZE,
@@ -260,5 +261,7 @@ class TrainModule:
             callbacks=callback_list,
             validation_data=(x_valid, y_valid)
         )
+        model.load_weights(filepath=self.CKPT_PATH)
+        model.save(filepath=self.MODEL_PATH)
 
         return hist
