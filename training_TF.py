@@ -24,11 +24,12 @@ x_train, x_valid, x_test, y_train, y_valid, y_test = nphandler["x_train"], nphan
 
 print(np.shape(x_train), np.shape(x_valid), np.shape(x_test),
       np.shape(y_train), np.shape(y_valid), np.shape(y_test))
+print(np.max(x_train), np.max(x_valid), np.max(x_test),
+      np.min(x_train), np.min(x_valid), np.min(x_test))
 print(np.unique(y_train, return_counts=True))
 print(np.unique(y_valid, return_counts=True))
 print(np.unique(y_test, return_counts=True))
 
-x_train, x_valid, x_test = x_train / 255.0, x_valid / 255.0, x_test / 255.0
 y_train, y_valid, y_test = to_categorical(y_train), to_categorical(y_valid), to_categorical(y_test)
 
 tm = TrainModule(input_shape=np.shape(x_train)[1:], output_shape=OUTPUT_LABEL_CNT,
