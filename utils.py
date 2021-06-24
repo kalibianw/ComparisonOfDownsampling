@@ -18,11 +18,12 @@ class DataModule:
         """
         self.DATA_DIR_PATH = data_dir_path
 
-    def img_to_npz(self, npz_path: str, color_mode="rgb", dsize=(300, 300)):
+    def img_to_npz(self, npz_path: str, color_mode="rgb", dsize=(300, 300), normalized=True):
         """
         :param npz_path: Path of result npz file path. ex) test.npz
         :param color_mode: Channel of image color. rgb or gray. default: "rgb'
         :param dsize: Destination size of image. default: (300, 300)
+        :param normalized: Image normalization status. default: True
         :return: None
         """
         imgs = list()
@@ -49,8 +50,11 @@ class DataModule:
             if fidx % int(per) == 0:
                 print(f"{fidx / int(per)}% 완료")
 
-        imgs = np.array(imgs, dtype=np.float16)
-        imgs = imgs / 255.0
+        if normalized is True:
+            imgs = np.array(imgs, dtype=np.float16)
+            imgs = imgs / 255.0
+        elif normalized is False:
+            imgs = np.array(imgs)
         labels = np.array(labels)
 
         print(np.shape(imgs), np.shape(labels))
