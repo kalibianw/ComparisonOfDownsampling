@@ -251,6 +251,46 @@ class TrainModule:
 
         return model
 
+    def create_contrast_model(self):
+        input_layer = layers.Input(shape=self.INPUT_SHAPE)
+
+        conv2d_1_1 = layers.Conv2D(filters=32, kernel_size=(3, 3), padding="same", activation=activations.relu,
+                                   kernel_initializer="he_normal", name="conv2d_1_1")(input_layer)
+        max_pool_1_1 = layers.MaxPooling2D(padding="same", name="max_pool_1_1")(conv2d_1_1)
+        conv2d_1_2 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.relu,
+                                   kernel_initializer="he_normal", name="conv2d_1_2")(max_pool_1_1)
+        max_pool_1_2 = layers.MaxPooling2D(padding="same", name="max_pool_1_2")(conv2d_1_2)
+        conv2d_1_3 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.relu,
+                                   kernel_initializer="he_normal", name="conv2d_1_3")(max_pool_1_2)
+        max_pool_1_3 = layers.MaxPooling2D(padding="same", name="max_pool_1_3")(conv2d_1_3)
+        conv2d_1_4 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.relu,
+                                   kernel_initializer="he_normal", name="conv2d_1_4")(max_pool_1_3)
+        max_pool_1_4 = layers.MaxPooling2D(padding="same", name="max_pool_1_4")(conv2d_1_4)
+        conv2d_1_5 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.relu,
+                                   kernel_initializer="he_normal", name="conv2d_1_5")(max_pool_1_4)
+        max_pool_1_5 = layers.MaxPooling2D(padding="same", name="max_pool_1_5")(conv2d_1_5)
+        conv2d_1_6 = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.relu,
+                                   kernel_initializer="he_normal", name="conv2d_1_6")(max_pool_1_5)
+        max_pool_1_6 = layers.MaxPooling2D(padding="same", name="max_pool_1_6")(conv2d_1_6)
+
+        flatten = layers.Flatten()(max_pool_1_6)
+
+        dense_1 = layers.Dense(units=512, activation=activations.relu)(flatten)
+        dense_2 = layers.Dense(units=256, activation=activations.relu)(dense_1)
+        dense_3 = layers.Dense(units=128, activation=activations.relu)(dense_2)
+
+        output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.relu)(dense_3)
+
+        model = models.Model(inputs=[input_layer], outputs=[output_layer])
+
+        model.compile(
+            optimizer=optimizers.Adam(),
+            loss=losses.categorical_crossentropy,
+            metrics=["acc"]
+        )
+
+        return model
+
     def model_training(self, model, x_train, y_train, x_valid, y_valid):
         callback_list = [
             callbacks.ReduceLROnPlateau(factor=0.4, patience=5, verbose=1, min_lr=1e-6),
