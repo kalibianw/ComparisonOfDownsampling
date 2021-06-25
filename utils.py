@@ -96,8 +96,9 @@ class TrainModule:
 
         conv2d_4 = layers.Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation=activations.relu,
                                  kernel_initializer="he_normal", kernel_regularizer=regularizers.L2())(max_pool_3)
+        max_pool_4 = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(conv2d_4)
 
-        batch_normalization_2 = layers.BatchNormalization()(conv2d_4)
+        batch_normalization_2 = layers.BatchNormalization()(max_pool_4)
 
         flatten = layers.Flatten()(batch_normalization_2)
 
@@ -135,11 +136,11 @@ class TrainModule:
 
         batch_normalization_1 = layers.BatchNormalization()(conv2d_2)
 
-        conv2d_3 = layers.Conv2D(filters=128, kernel_size=(3, 3), strides=2, padding="same",
+        conv2d_3 = layers.Conv2D(filters=256, kernel_size=(3, 3), strides=2, padding="same",
                                  activation=activations.relu, kernel_initializer="he_normal",
                                  kernel_regularizer=regularizers.L2())(batch_normalization_1)
 
-        conv2d_4 = layers.Conv2D(filters=256, kernel_size=(3, 3), strides=2, padding="same",
+        conv2d_4 = layers.Conv2D(filters=512, kernel_size=(3, 3), strides=2, padding="same",
                                  activation=activations.relu, kernel_initializer="he_normal",
                                  kernel_regularizer=regularizers.L2())(conv2d_3)
 
