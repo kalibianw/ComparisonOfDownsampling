@@ -1,9 +1,4 @@
 from tensorflow.keras import models, layers, activations, optimizers, losses, callbacks
-
-import torch.nn as nn
-import torch.nn.functional as F
-import torch
-
 from sklearn.model_selection import train_test_split
 from natsort import natsorted
 import numpy as np
@@ -86,22 +81,22 @@ class TrainModule:
     def create_model(self):
         input_layer = layers.Input(shape=self.INPUT_SHAPE)
 
-        conv2d_1_1 = layers.Conv2D(filters=32, kernel_size=(3, 3), padding="same", activation=activations.relu,
+        conv2d_1_1 = layers.Conv2D(filters=32, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                    kernel_initializer="he_normal", name="conv2d_1_1")(input_layer)
         max_pool_1_1 = layers.MaxPooling2D(padding="same", name="max_pool_1_1")(conv2d_1_1)
-        conv2d_1_2 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.relu,
+        conv2d_1_2 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                    kernel_initializer="he_normal", name="conv2d_1_2")(max_pool_1_1)
         max_pool_1_2 = layers.MaxPooling2D(padding="same", name="max_pool_1_2")(conv2d_1_2)
-        conv2d_1_3 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.relu,
+        conv2d_1_3 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                    kernel_initializer="he_normal", name="conv2d_1_3")(max_pool_1_2)
         max_pool_1_3 = layers.MaxPooling2D(padding="same", name="max_pool_1_3")(conv2d_1_3)
-        conv2d_1_4 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.relu,
+        conv2d_1_4 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                    kernel_initializer="he_normal", name="conv2d_1_4")(max_pool_1_3)
         max_pool_1_4 = layers.MaxPooling2D(padding="same", name="max_pool_1_4")(conv2d_1_4)
-        conv2d_1_5 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.relu,
+        conv2d_1_5 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                    kernel_initializer="he_normal", name="conv2d_1_5")(max_pool_1_4)
         max_pool_1_5 = layers.MaxPooling2D(padding="same", name="max_pool_1_5")(conv2d_1_5)
-        conv2d_1_6 = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.relu,
+        conv2d_1_6 = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                    kernel_initializer="he_normal", name="conv2d_1_6")(max_pool_1_5)
         max_pool_1_6 = layers.MaxPooling2D(padding="same", name="max_pool_1_6")(conv2d_1_6)
 
@@ -122,9 +117,11 @@ class TrainModule:
 
         flatten = layers.Flatten()(concat)
 
-        dense_1 = layers.Dense(units=512, activation=activations.relu)(flatten)
-        dense_2 = layers.Dense(units=256, activation=activations.relu)(dense_1)
-        dense_3 = layers.Dense(units=128, activation=activations.relu)(dense_2)
+        dense_1 = layers.Dense(units=512, activation=activations.selu)(flatten)
+        dropout_1 = layers.Dropout(rate=0.5)(dense_1)
+        dense_2 = layers.Dense(units=256, activation=activations.selu)(dropout_1)
+        dropout_2 = layers.Dropout(rate=0.5)(dense_2)
+        dense_3 = layers.Dense(units=128, activation=activations.selu)(dropout_2)
 
         output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_3)
 
@@ -141,30 +138,32 @@ class TrainModule:
     def create_contrast_model(self):
         input_layer = layers.Input(shape=self.INPUT_SHAPE)
 
-        conv2d_1_1 = layers.Conv2D(filters=32, kernel_size=(3, 3), padding="same", activation=activations.relu,
+        conv2d_1_1 = layers.Conv2D(filters=32, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                    kernel_initializer="he_normal", name="conv2d_1_1")(input_layer)
         max_pool_1_1 = layers.MaxPooling2D(padding="same", name="max_pool_1_1")(conv2d_1_1)
-        conv2d_1_2 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.relu,
+        conv2d_1_2 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                    kernel_initializer="he_normal", name="conv2d_1_2")(max_pool_1_1)
         max_pool_1_2 = layers.MaxPooling2D(padding="same", name="max_pool_1_2")(conv2d_1_2)
-        conv2d_1_3 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.relu,
+        conv2d_1_3 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                    kernel_initializer="he_normal", name="conv2d_1_3")(max_pool_1_2)
         max_pool_1_3 = layers.MaxPooling2D(padding="same", name="max_pool_1_3")(conv2d_1_3)
-        conv2d_1_4 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.relu,
+        conv2d_1_4 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                    kernel_initializer="he_normal", name="conv2d_1_4")(max_pool_1_3)
         max_pool_1_4 = layers.MaxPooling2D(padding="same", name="max_pool_1_4")(conv2d_1_4)
-        conv2d_1_5 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.relu,
+        conv2d_1_5 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                    kernel_initializer="he_normal", name="conv2d_1_5")(max_pool_1_4)
         max_pool_1_5 = layers.MaxPooling2D(padding="same", name="max_pool_1_5")(conv2d_1_5)
-        conv2d_1_6 = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.relu,
+        conv2d_1_6 = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                    kernel_initializer="he_normal", name="conv2d_1_6")(max_pool_1_5)
         max_pool_1_6 = layers.MaxPooling2D(padding="same", name="max_pool_1_6")(conv2d_1_6)
 
         flatten = layers.Flatten()(max_pool_1_6)
 
-        dense_1 = layers.Dense(units=512, activation=activations.relu)(flatten)
-        dense_2 = layers.Dense(units=256, activation=activations.relu)(dense_1)
-        dense_3 = layers.Dense(units=128, activation=activations.relu)(dense_2)
+        dense_1 = layers.Dense(units=512, activation=activations.selu)(flatten)
+        dropout_1 = layers.Dropout(rate=0.5)(dense_1)
+        dense_2 = layers.Dense(units=256, activation=activations.selu)(dropout_1)
+        dropout_2 = layers.Dropout(rate=0.5)(dense_2)
+        dense_3 = layers.Dense(units=128, activation=activations.selu)(dropout_2)
 
         output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_3)
 
