@@ -2,16 +2,15 @@ from utils import TrainModule
 from tensorflow.keras.utils import to_categorical
 import numpy as np
 import shutil
-import sys
 import os
 
-COLOR_MODE = sys.argv[1]
+COLOR_MODE = "gray"
 OUTPUT_LABEL_CNT = 2
-FNAME = f"cats_dogs_{COLOR_MODE}"
+FNAME = f"normalized_cats_dogs_{COLOR_MODE}"
 NPZ_PATH = f"npz/{FNAME}.npz"
-CKPT_PATH = f"D:/AI/ckpt/DAG/{FNAME}.ckpt"
-MODEL_PATH = f"D:/AI/model/DAG/{FNAME}.h5"
-LOG_DIR_PATH = f"logs/{FNAME}/"
+CKPT_PATH = f"D:/AI/ckpt/DAG/contrast_{FNAME}.ckpt"
+MODEL_PATH = f"D:/AI/model/DAG/contrast_{FNAME}.h5"
+LOG_DIR_PATH = f"logs/contrast_{FNAME}/"
 if os.path.exists(LOG_DIR_PATH):
     shutil.rmtree(LOG_DIR_PATH)
     os.makedirs(LOG_DIR_PATH)
@@ -46,7 +45,7 @@ tm = TrainModule(input_shape=np.shape(x_train)[1:], output_shape=OUTPUT_LABEL_CN
                  batch_size=BATCH_SIZE,
                  epochs=EPOCHS)
 
-model = tm.create_model()
+model = tm.create_contrast_model()
 model.summary()
 
 hist = tm.model_training(
