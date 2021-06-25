@@ -40,7 +40,7 @@ tm = TrainModule(input_shape=np.shape(x_train)[1:], output_shape=OUTPUT_LABEL_CN
 
 model = tm.create_strided_cnn_model()
 model.summary()
-exit()
+
 tm.model_training(
     model=model,
     x_train=x_train, y_train=y_train,
