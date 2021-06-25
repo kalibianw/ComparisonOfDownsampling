@@ -101,29 +101,30 @@ class TrainModule:
         max_pool_1_6 = layers.MaxPooling2D(padding="same", name="max_pool_1_6")(conv2d_1_6)
 
         conv2d_2_1 = layers.Conv2D(filters=32, kernel_size=(3, 3), padding="same", strides=2,
-                                   name="conv2d_2_1")(input_layer)
+                                   kernel_initializer="he_normal", name="conv2d_2_1")(input_layer)
         conv2d_2_2 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", strides=2,
-                                   name="conv2d_2_2")(conv2d_2_1)
+                                   kernel_initializer="he_normal", name="conv2d_2_2")(conv2d_2_1)
         conv2d_2_3 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", strides=2,
-                                   name="conv2d_2_3")(conv2d_2_2)
+                                   kernel_initializer="he_normal", name="conv2d_2_3")(conv2d_2_2)
         conv2d_2_4 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", strides=2,
-                                   name="conv2d_2_4")(conv2d_2_3)
+                                   kernel_initializer="he_normal", name="conv2d_2_4")(conv2d_2_3)
         conv2d_2_5 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", strides=2,
-                                   name="conv2d_2_5")(conv2d_2_4)
+                                   kernel_initializer="he_normal", name="conv2d_2_5")(conv2d_2_4)
         conv2d_2_6 = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", strides=2,
-                                   name="conv2d_2_6")(conv2d_2_5)
+                                   kernel_initializer="he_normal", name="conv2d_2_6")(conv2d_2_5)
 
         concat = layers.Concatenate()([max_pool_1_6, conv2d_2_6])
 
         flatten = layers.Flatten()(concat)
 
-        dense_1 = layers.Dense(units=512, activation=activations.selu)(flatten)
+        dense_1 = layers.Dense(units=512, activation=activations.selu, kernel_initializer="he_normal")(flatten)
         dropout_1 = layers.Dropout(rate=0.5)(dense_1)
-        dense_2 = layers.Dense(units=256, activation=activations.selu)(dropout_1)
+        dense_2 = layers.Dense(units=256, activation=activations.selu, kernel_initializer="he_normal")(dropout_1)
         dropout_2 = layers.Dropout(rate=0.5)(dense_2)
-        dense_3 = layers.Dense(units=128, activation=activations.selu)(dropout_2)
+        dense_3 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_normal")(dropout_2)
 
-        output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_3)
+        output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax,
+                                    kernel_initializer="he_normal")(dense_3)
 
         model = models.Model(inputs=[input_layer], outputs=[output_layer])
 
@@ -159,13 +160,14 @@ class TrainModule:
 
         flatten = layers.Flatten()(max_pool_1_6)
 
-        dense_1 = layers.Dense(units=512, activation=activations.selu)(flatten)
+        dense_1 = layers.Dense(units=512, activation=activations.selu, kernel_initializer="he_normal")(flatten)
         dropout_1 = layers.Dropout(rate=0.5)(dense_1)
-        dense_2 = layers.Dense(units=256, activation=activations.selu)(dropout_1)
+        dense_2 = layers.Dense(units=256, activation=activations.selu, kernel_initializer="he_normal")(dropout_1)
         dropout_2 = layers.Dropout(rate=0.5)(dense_2)
-        dense_3 = layers.Dense(units=128, activation=activations.selu)(dropout_2)
+        dense_3 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_normal")(dropout_2)
 
-        output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_3)
+        output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax,
+                                    kernel_initializer="he_normal")(dense_3)
 
         model = models.Model(inputs=[input_layer], outputs=[output_layer])
 
