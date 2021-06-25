@@ -117,9 +117,9 @@ class TrainModule:
 
         flatten = layers.Flatten()(concat)
 
-        dense_1 = layers.Dense(units=512, activation=activations.selu, kernel_initializer="he_normal")(flatten)
+        dense_1 = layers.Dense(units=1024, activation=activations.selu, kernel_initializer="he_normal")(flatten)
         dropout_1 = layers.Dropout(rate=0.5)(dense_1)
-        dense_2 = layers.Dense(units=256, activation=activations.selu, kernel_initializer="he_normal")(dropout_1)
+        dense_2 = layers.Dense(units=512, activation=activations.selu, kernel_initializer="he_normal")(dropout_1)
         dropout_2 = layers.Dropout(rate=0.5)(dense_2)
         dense_3 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_normal")(dropout_2)
 
@@ -159,9 +159,9 @@ class TrainModule:
 
         flatten = layers.Flatten()(max_pool_1_6)
 
-        dense_1 = layers.Dense(units=512, activation=activations.selu, kernel_initializer="he_normal")(flatten)
+        dense_1 = layers.Dense(units=1024, activation=activations.selu, kernel_initializer="he_normal")(flatten)
         dropout_1 = layers.Dropout(rate=0.5)(dense_1)
-        dense_2 = layers.Dense(units=256, activation=activations.selu, kernel_initializer="he_normal")(dropout_1)
+        dense_2 = layers.Dense(units=512, activation=activations.selu, kernel_initializer="he_normal")(dropout_1)
         dropout_2 = layers.Dropout(rate=0.5)(dense_2)
         dense_3 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_normal")(dropout_2)
 

@@ -7,7 +7,7 @@ import os
 
 COLOR_MODE = sys.argv[1]
 OUTPUT_LABEL_CNT = 2
-FNAME = f"cats_dogs_{COLOR_MODE}"
+FNAME = f"normalized_cats_dogs_{COLOR_MODE}"
 NPZ_PATH = f"npz/{FNAME}.npz"
 CKPT_PATH = f"D:/AI/ckpt/DAG/contrast_{FNAME}.ckpt"
 MODEL_PATH = f"D:/AI/model/DAG/contrast_{FNAME}.h5"
