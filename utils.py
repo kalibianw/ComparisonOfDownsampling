@@ -239,7 +239,7 @@ class TrainModule:
         dense_2 = layers.Dense(units=256, activation=activations.relu)(dense_1)
         dense_3 = layers.Dense(units=128, activation=activations.relu)(dense_2)
 
-        output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.relu)(dense_3)
+        output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_3)
 
         model = models.Model(inputs=[input_layer], outputs=[output_layer])
 
@@ -279,7 +279,7 @@ class TrainModule:
         dense_2 = layers.Dense(units=256, activation=activations.relu)(dense_1)
         dense_3 = layers.Dense(units=128, activation=activations.relu)(dense_2)
 
-        output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.relu)(dense_3)
+        output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_3)
 
         model = models.Model(inputs=[input_layer], outputs=[output_layer])
 
