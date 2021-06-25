@@ -1,4 +1,4 @@
-from tensorflow.keras import models, layers, activations, optimizers, losses, callbacks
+from tensorflow.keras import models, layers, activations, optimizers, losses, callbacks, regularizers
 from sklearn.model_selection import train_test_split
 from natsort import natsorted
 import numpy as np
@@ -81,29 +81,36 @@ class TrainModule:
     def create_basic_cnn_model(self):
         input_layer = layers.Input(shape=self.INPUT_SHAPE)
 
-        conv2d_1 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.selu,
-                                 kernel_initializer="he_normal")(input_layer)
+        conv2d_1 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.relu,
+                                 kernel_initializer="he_normal", kernel_regularizer=regularizers.L2())(input_layer)
         max_pool_1 = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(conv2d_1)
 
-        conv2d_2 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
-                                 kernel_initializer="he_normal")(max_pool_1)
-        max_pool_2 = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(conv2d_2)
+        conv2d_2 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.relu,
+                                 kernel_initializer="he_normal", kernel_regularizer=regularizers.L2())(max_pool_1)
 
-        conv2d_3 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
-                                 kernel_initializer="he_normal")(max_pool_2)
+        batch_normalization_1 = layers.BatchNormalization()(conv2d_2)
+
+        max_pool_2 = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(batch_normalization_1)
+
+        conv2d_3 = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.relu,
+                                 kernel_initializer="he_normal", kernel_regularizer=regularizers.L2())(max_pool_2)
         max_pool_3 = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(conv2d_3)
 
-        conv2d_4 = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.selu,
-                                 kernel_initializer="he_normal")(max_pool_3)
-        max_pool_4 = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(conv2d_4)
+        conv2d_4 = layers.Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation=activations.relu,
+                                 kernel_initializer="he_normal", kernel_regularizer=regularizers.L2())(max_pool_3)
 
-        flatten = layers.Flatten()(max_pool_4)
+        batch_normalization_2 = layers.BatchNormalization()(conv2d_4)
 
-        dense_1 = layers.Dense(units=1024, activation=activations.selu, kernel_initializer="he_normal")(flatten)
+        flatten = layers.Flatten()(batch_normalization_2)
+
+        dense_1 = layers.Dense(units=1024, activation=activations.relu, kernel_initializer="he_normal",
+                               kernel_regularizer=regularizers.L2())(flatten)
         dropout_1 = layers.Dropout(rate=0.5)(dense_1)
-        dense_2 = layers.Dense(units=512, activation=activations.selu, kernel_initializer="he_normal")(dropout_1)
+        dense_2 = layers.Dense(units=512, activation=activations.relu, kernel_initializer="he_normal",
+                               kernel_regularizer=regularizers.L2())(dropout_1)
         dropout_2 = layers.Dropout(rate=0.5)(dense_2)
-        dense_3 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_normal")(dropout_2)
+        dense_3 = layers.Dense(units=128, activation=activations.relu, kernel_initializer="he_normal",
+                               kernel_regularizer=regularizers.L2())(dropout_2)
 
         output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_3)
 
@@ -121,24 +128,24 @@ class TrainModule:
         input_layer = layers.Input(shape=self.INPUT_SHAPE)
 
         conv2d_1 = layers.Conv2D(filters=64, kernel_size=(3, 3), strides=2, padding="same",
-                                 activation=activations.selu, kernel_initializer="he_normal")(input_layer)
+                                 activation=activations.relu, kernel_initializer="he_normal")(input_layer)
 
         conv2d_2 = layers.Conv2D(filters=128, kernel_size=(3, 3), strides=2, padding="same",
-                                 activation=activations.selu, kernel_initializer="he_normal")(conv2d_1)
+                                 activation=activations.relu, kernel_initializer="he_normal")(conv2d_1)
 
         conv2d_3 = layers.Conv2D(filters=128, kernel_size=(3, 3), strides=2, padding="same",
-                                 activation=activations.selu, kernel_initializer="he_normal")(conv2d_2)
+                                 activation=activations.relu, kernel_initializer="he_normal")(conv2d_2)
 
         conv2d_4 = layers.Conv2D(filters=256, kernel_size=(3, 3), strides=2, padding="same",
-                                 activation=activations.selu, kernel_initializer="he_normal")(conv2d_3)
+                                 activation=activations.relu, kernel_initializer="he_normal")(conv2d_3)
 
         flatten = layers.Flatten()(conv2d_4)
 
-        dense_1 = layers.Dense(units=1024, activation=activations.selu, kernel_initializer="he_normal")(flatten)
+        dense_1 = layers.Dense(units=1024, activation=activations.relu, kernel_initializer="he_normal")(flatten)
         dropout_1 = layers.Dropout(rate=0.5)(dense_1)
-        dense_2 = layers.Dense(units=512, activation=activations.selu, kernel_initializer="he_normal")(dropout_1)
+        dense_2 = layers.Dense(units=512, activation=activations.relu, kernel_initializer="he_normal")(dropout_1)
         dropout_2 = layers.Dropout(rate=0.5)(dense_2)
-        dense_3 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_normal")(dropout_2)
+        dense_3 = layers.Dense(units=128, activation=activations.relu, kernel_initializer="he_normal")(dropout_2)
 
         output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_3)
 
@@ -155,49 +162,49 @@ class TrainModule:
     def create_concat_cnn_model(self):
         input_layer = layers.Input(shape=self.INPUT_SHAPE, name="input_layer")
 
-        conv2d_1_1 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.selu,
+        conv2d_1_1 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.relu,
                                    kernel_initializer="he_normal", name="conv2d_1_1")(input_layer)
         max_pool_1_1 = layers.MaxPooling2D(pool_size=(2, 2), padding="same", name="max_pool_1_1")(conv2d_1_1)
 
-        conv2d_1_2 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
+        conv2d_1_2 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.relu,
                                    kernel_initializer="he_normal", name="conv2d_1_2")(max_pool_1_1)
         max_pool_1_2 = layers.MaxPooling2D(pool_size=(2, 2), padding="same", name="max_pool_1_2")(conv2d_1_2)
 
-        conv2d_1_3 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
+        conv2d_1_3 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.relu,
                                    kernel_initializer="he_normal", name="conv2d_1_3")(max_pool_1_2)
         max_pool_1_3 = layers.MaxPooling2D(pool_size=(2, 2), padding="same", name="max_pool_1_3")(conv2d_1_3)
 
-        conv2d_1_4 = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.selu,
+        conv2d_1_4 = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.relu,
                                    kernel_initializer="he_normal", name="conv2d_1_4")(max_pool_1_3)
         max_pool_1_4 = layers.MaxPooling2D(pool_size=(2, 2), padding="same", name="max_pool_1_4")(conv2d_1_4)
 
         conv2d_2_1 = layers.Conv2D(filters=64, kernel_size=(3, 3), strides=2, padding="same",
-                                   activation=activations.selu, kernel_initializer="he_normal",
+                                   activation=activations.relu, kernel_initializer="he_normal",
                                    name="conv2d_2_1")(input_layer)
 
         conv2d_2_2 = layers.Conv2D(filters=128, kernel_size=(3, 3), strides=2, padding="same",
-                                   activation=activations.selu, kernel_initializer="he_normal",
+                                   activation=activations.relu, kernel_initializer="he_normal",
                                    name="conv2d_2_2")(conv2d_2_1)
 
         conv2d_2_3 = layers.Conv2D(filters=128, kernel_size=(3, 3), strides=2, padding="same",
-                                   activation=activations.selu, kernel_initializer="he_normal",
+                                   activation=activations.relu, kernel_initializer="he_normal",
                                    name="conv2d_2_3")(conv2d_2_2)
 
         conv2d_2_4 = layers.Conv2D(filters=256, kernel_size=(3, 3), strides=2, padding="same",
-                                   activation=activations.selu, kernel_initializer="he_normal",
+                                   activation=activations.relu, kernel_initializer="he_normal",
                                    name="conv2d_2_4")(conv2d_2_3)
 
         concat = layers.Concatenate()([max_pool_1_4, conv2d_2_4])
 
         flatten = layers.Flatten()(concat)
 
-        dense_1 = layers.Dense(units=1024, activation=activations.selu, kernel_initializer="he_normal",
+        dense_1 = layers.Dense(units=1024, activation=activations.relu, kernel_initializer="he_normal",
                                name="dense_1")(flatten)
         dropout_1 = layers.Dropout(rate=0.5)(dense_1)
-        dense_2 = layers.Dense(units=512, activation=activations.selu, kernel_initializer="he_normal",
+        dense_2 = layers.Dense(units=512, activation=activations.relu, kernel_initializer="he_normal",
                                name="dense_2")(dropout_1)
         dropout_2 = layers.Dropout(rate=0.5)(dense_2)
-        dense_3 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_normal",
+        dense_3 = layers.Dense(units=128, activation=activations.relu, kernel_initializer="he_normal",
                                name="dense_3")(dropout_2)
 
         output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax,
