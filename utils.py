@@ -87,9 +87,7 @@ class TrainModule:
 
         conv2d_2 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.relu,
                                  kernel_initializer="he_normal", kernel_regularizer=regularizers.L2())(max_pool_1)
-
         batch_normalization_1 = layers.BatchNormalization()(conv2d_2)
-
         max_pool_2 = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(batch_normalization_1)
 
         conv2d_3 = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.relu,
