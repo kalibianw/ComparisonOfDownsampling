@@ -7,7 +7,7 @@ import shutil
 import os
 
 OUTPUT_LABEL_CNT = 10
-FNAME = "basic_CNN_training"
+FNAME = "avg_pooling_CNN_training"
 CKPT_PATH = f"D:/AI/ckpt/DAG/{FNAME}.ckpt"
 MODEL_PATH = f"D:/AI/model/DAG/{FNAME}.h5"
 LOG_DIR_PATH = f"logs/{FNAME}/"
