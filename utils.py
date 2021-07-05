@@ -98,11 +98,10 @@ class TrainModule:
                                  kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(max_pool_2)
         conv2d_3_ = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                   kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(conv2d_3)
-        max_pool_3 = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(conv2d_3_)
+        batch_normalization_2 = layers.BatchNormalization()(conv2d_3_)
+        max_pool_3 = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(batch_normalization_2)
 
-        batch_normalization_2 = layers.BatchNormalization()(max_pool_3)
-
-        flatten = layers.Flatten()(batch_normalization_2)
+        flatten = layers.Flatten()(max_pool_3)
 
         dense_1 = layers.Dense(units=512, activation=activations.selu, kernel_initializer="he_uniform",
                                kernel_regularizer=regularizers.L2())(flatten)
@@ -142,11 +141,10 @@ class TrainModule:
                                  kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(avg_pool_2)
         conv2d_3_ = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                   kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(conv2d_3)
-        avg_pool_3 = layers.AveragePooling2D(pool_size=(2, 2), padding="same")(conv2d_3_)
+        batch_normalization_2 = layers.BatchNormalization()(conv2d_3_)
+        avg_pool_3 = layers.AveragePooling2D(pool_size=(2, 2), padding="same")(batch_normalization_2)
 
-        batch_normalization_2 = layers.BatchNormalization()(avg_pool_3)
-
-        flatten = layers.Flatten()(batch_normalization_2)
+        flatten = layers.Flatten()(avg_pool_3)
 
         dense_1 = layers.Dense(units=512, activation=activations.selu, kernel_initializer="he_uniform",
                                kernel_regularizer=regularizers.L2())(flatten)
