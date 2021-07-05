@@ -129,22 +129,22 @@ class TrainModule:
                                  kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(input_layer)
         conv2d_1_ = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                   kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(conv2d_1)
-        max_pool_1 = layers.AveragePooling2D(pool_size=(2, 2), padding="same")(conv2d_1_)
+        avg_pool_1 = layers.AveragePooling2D(pool_size=(2, 2), padding="same")(conv2d_1_)
 
         conv2d_2 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
-                                 kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(max_pool_1)
+                                 kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(avg_pool_1)
         conv2d_2_ = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                   kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(conv2d_2)
         batch_normalization_1 = layers.BatchNormalization()(conv2d_2_)
-        max_pool_2 = layers.AveragePooling2D(pool_size=(2, 2), padding="same")(batch_normalization_1)
+        avg_pool_2 = layers.AveragePooling2D(pool_size=(2, 2), padding="same")(batch_normalization_1)
 
         conv2d_3 = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.selu,
-                                 kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(max_pool_2)
+                                 kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(avg_pool_2)
         conv2d_3_ = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                   kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(conv2d_3)
-        max_pool_3 = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(conv2d_3_)
+        avg_pool_3 = layers.AveragePooling2D(pool_size=(2, 2), padding="same")(conv2d_3_)
 
-        batch_normalization_2 = layers.BatchNormalization()(max_pool_3)
+        batch_normalization_2 = layers.BatchNormalization()(avg_pool_3)
 
         flatten = layers.Flatten()(batch_normalization_2)
 

@@ -7,7 +7,7 @@ import shutil
 import os
 
 OUTPUT_LABEL_CNT = 10
-FNAME = "concat_CNN_training"
+FNAME = "strided_CNN_training_2"
 NPZ_PATH = f"npz/{FNAME}.npz"
 CKPT_PATH = f"D:/AI/ckpt/DAG/{FNAME}.ckpt"
 MODEL_PATH = f"D:/AI/model/DAG/{FNAME}.h5"
