@@ -214,76 +214,52 @@ class TrainModule:
 
         return model
 
-    def create_concat_cnn_model(self):
-        input_layer = layers.Input(shape=self.INPUT_SHAPE, name="input_layer")
+    def create_strided_cnn_model_2(self):
+        input_layer = layers.Input(shape=self.INPUT_SHAPE)
 
-        conv2d_1_1 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.selu,
-                                   kernel_initializer="he_uniform", name="conv2d_1_1",
-                                   kernel_regularizer=regularizers.L2())(input_layer)
-        conv2d_1_1_ = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.selu,
-                                    kernel_initializer="he_uniform", name="conv2d_1_1_",
-                                    kernel_regularizer=regularizers.L2())(conv2d_1_1)
-        max_pool_1_1 = layers.MaxPooling2D(pool_size=(2, 2), padding="same", name="max_pool_1_1")(conv2d_1_1_)
+        conv2d_1 = layers.Conv2D(filters=64, kernel_size=(3, 3), strides=1, padding="same",
+                                 activation=activations.selu, kernel_initializer="he_uniform",
+                                 kernel_regularizer=regularizers.L2())(input_layer)
+        conv2d_1_2 = layers.Conv2D(filters=64, kernel_size=(3, 3), strides=1, padding="same",
+                                   activation=activations.selu, kernel_initializer="he_uniform",
+                                   kernel_regularizer=regularizers.L2())(conv2d_1)
+        conv2d_1_3 = layers.Conv2D(filters=64, kernel_size=(3, 3), strides=2, padding="same",
+                                   activation=activations.selu, kernel_initializer="he_uniform",
+                                   kernel_regularizer=regularizers.L2())(conv2d_1_2)
 
-        conv2d_1_2 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
-                                   kernel_initializer="he_uniform", name="conv2d_1_2",
-                                   kernel_regularizer=regularizers.L2())(max_pool_1_1)
-        conv2d_1_2_ = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
-                                    kernel_initializer="he_uniform", name="conv2d_1_2_",
-                                    kernel_regularizer=regularizers.L2())(conv2d_1_2)
-        batch_normalization_1_1 = layers.BatchNormalization()(conv2d_1_2_)
-        max_pool_1_2 = layers.MaxPooling2D(pool_size=(2, 2), padding="same",
-                                           name="max_pool_1_2")(batch_normalization_1_1)
+        conv2d_2 = layers.Conv2D(filters=128, kernel_size=(3, 3), strides=1, padding="same",
+                                 activation=activations.selu, kernel_initializer="he_uniform",
+                                 kernel_regularizer=regularizers.L2())(conv2d_1_3)
+        conv2d_2_1 = layers.Conv2D(filters=128, kernel_size=(3, 3), strides=1, padding="same",
+                                   activation=activations.selu, kernel_initializer="he_uniform",
+                                   kernel_regularizer=regularizers.L2())(conv2d_2)
+        conv2d_2_2 = layers.Conv2D(filters=128, kernel_size=(3, 3), strides=2, padding="same",
+                                   activation=activations.selu, kernel_initializer="he_uniform",
+                                   kernel_regularizer=regularizers.L2())(conv2d_2_1)
 
-        conv2d_1_3 = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.selu,
-                                   kernel_initializer="he_uniform", name="conv2d_1_3",
-                                   kernel_regularizer=regularizers.L2())(max_pool_1_2)
-        conv2d_1_3_ = layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation=activations.selu,
-                                    kernel_initializer="he_uniform", name="conv2d_1_3_",
-                                    kernel_regularizer=regularizers.L2())(conv2d_1_3)
-        max_pool_1_3 = layers.MaxPooling2D(pool_size=(2, 2), padding="same", name="max_pool_1_3")(conv2d_1_3_)
+        batch_normalization_1 = layers.BatchNormalization()(conv2d_2_2)
 
-        conv2d_2_1_1 = layers.Conv2D(filters=64, kernel_size=(3, 3), strides=1, padding="same",
-                                     activation=activations.selu, kernel_initializer="he_uniform",
-                                     name="conv2d_2_1_1", kernel_regularizer=regularizers.L2())(input_layer)
-        conv2d_2_1_2 = layers.Conv2D(filters=64, kernel_size=(3, 3), strides=2, padding="same",
-                                     activation=activations.selu, kernel_initializer="he_uniform",
-                                     name="conv2d_2_1_2", kernel_regularizer=regularizers.L2())(conv2d_2_1_1)
+        conv2d_3 = layers.Conv2D(filters=256, kernel_size=(3, 3), strides=1, padding="same",
+                                 activation=activations.selu, kernel_initializer="he_uniform",
+                                 kernel_regularizer=regularizers.L2())(batch_normalization_1)
+        conv2d_3_1 = layers.Conv2D(filters=256, kernel_size=(3, 3), strides=1, padding="same",
+                                   activation=activations.selu, kernel_initializer="he_uniform",
+                                   kernel_regularizer=regularizers.L2())(conv2d_3)
+        conv2d_3_2 = layers.Conv2D(filters=256, kernel_size=(3, 3), strides=2, padding="same",
+                                   activation=activations.selu, kernel_initializer="he_uniform",
+                                   kernel_regularizer=regularizers.L2())(conv2d_3_1)
 
-        conv2d_2_2_1 = layers.Conv2D(filters=128, kernel_size=(3, 3), strides=1, padding="same",
-                                     activation=activations.selu, kernel_initializer="he_uniform",
-                                     name="conv2d_2_2_1", kernel_regularizer=regularizers.L2())(conv2d_2_1_2)
-        conv2d_2_2_2 = layers.Conv2D(filters=128, kernel_size=(3, 3), strides=2, padding="same",
-                                     activation=activations.selu, kernel_initializer="he_uniform",
-                                     name="conv2d_2_2_2", kernel_regularizer=regularizers.L2())(conv2d_2_2_1)
+        batch_normalization_2 = layers.BatchNormalization()(conv2d_3_2)
 
-        batch_normalization_2_1 = layers.BatchNormalization()(conv2d_2_2_2)
-
-        conv2d_2_3_1 = layers.Conv2D(filters=256, kernel_size=(3, 3), strides=1, padding="same",
-                                     activation=activations.selu, kernel_initializer="he_uniform",
-                                     name="conv2d_2_3_1", kernel_regularizer=regularizers.L2())(batch_normalization_2_1)
-        conv2d_2_3_2 = layers.Conv2D(filters=256, kernel_size=(3, 3), strides=2, padding="same",
-                                     activation=activations.selu, kernel_initializer="he_uniform",
-                                     name="conv2d_2_3_2", kernel_regularizer=regularizers.L2())(conv2d_2_3_1)
-
-        batch_normalization_2_2 = layers.BatchNormalization()(conv2d_2_3_2)
-
-        concat = layers.Concatenate()([max_pool_1_3, batch_normalization_2_2])
-
-        conv2d_dim_reduction = layers.Conv2D(filters=256, kernel_size=(1, 1), padding="same",
-                                             activation=activations.selu, kernel_initializer="he_uniform",
-                                             name="conv2d_dim_reduction", kernel_regularizer=regularizers.L2())(concat)
-
-        flatten = layers.Flatten()(conv2d_dim_reduction)
+        flatten = layers.Flatten()(batch_normalization_2)
 
         dense_1 = layers.Dense(units=512, activation=activations.selu, kernel_initializer="he_uniform",
-                               name="dense_1", kernel_regularizer=regularizers.L2())(flatten)
+                               kernel_regularizer=regularizers.L2())(flatten)
         dropout_1 = layers.Dropout(rate=0.5)(dense_1)
         dense_2 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_uniform",
-                               name="dense_2", kernel_regularizer=regularizers.L2())(dropout_1)
+                               kernel_regularizer=regularizers.L2())(dropout_1)
 
-        output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax,
-                                    name="output_layer")(dense_2)
+        output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_2)
 
         model = models.Model(inputs=[input_layer], outputs=[output_layer])
 
