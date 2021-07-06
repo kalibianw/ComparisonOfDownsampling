@@ -24,16 +24,16 @@ class DataModule:
         imgs = list()
         labels = list()
         folder_list = natsorted(os.listdir(self.DATA_DIR_PATH))
-        for folder_idx, folder_name in folder_list:
+        for folder_idx, folder_name in enumerate(folder_list):
             flist = natsorted(os.listdir(folder_name))
             fcnt = len(flist)
             per = fcnt / 100
             for file_idx, fname in enumerate(flist):
                 if color_mode == "rgb":
-                    img = cv2.imread(self.DATA_DIR_PATH + folder_name + fname, flags=cv2.IMREAD_COLOR)
+                    img = cv2.imread(self.DATA_DIR_PATH + folder_name + "/" + fname, flags=cv2.IMREAD_COLOR)
                     img = cv2.resize(img, dsize=dsize)
                 elif color_mode == "gray":
-                    img = cv2.imread(self.DATA_DIR_PATH + folder_name + fname, flags=cv2.IMREAD_GRAYSCALE)
+                    img = cv2.imread(self.DATA_DIR_PATH + folder_name + "/" + fname, flags=cv2.IMREAD_GRAYSCALE)
                     img = cv2.resize(img, dsize=dsize)
 
                 imgs.append(img)
