@@ -25,7 +25,7 @@ class DataModule:
         labels = list()
         folder_list = natsorted(os.listdir(self.DATA_DIR_PATH))
         for folder_idx, folder_name in enumerate(folder_list):
-            flist = natsorted(os.listdir(folder_name))
+            flist = natsorted(os.listdir(self.DATA_DIR_PATH + folder_name))
             fcnt = len(flist)
             per = fcnt / 100
             for file_idx, fname in enumerate(flist):
