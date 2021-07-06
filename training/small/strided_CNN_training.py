@@ -1,16 +1,16 @@
 from utils import TrainModule
-from sklearn.model_selection import train_test_split
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.datasets import cifar10
+from sklearn.model_selection import train_test_split
 import numpy as np
 import shutil
 import os
 
 OUTPUT_LABEL_CNT = 10
-FNAME = "avg_pooling_CNN_training"
+FNAME = "strided_CNN_training"
 CKPT_PATH = f"D:/AI/ckpt/DAG/{FNAME}.ckpt"
 MODEL_PATH = f"D:/AI/model/DAG/{FNAME}.h5"
-LOG_DIR_PATH = f"logs/{FNAME}/"
+LOG_DIR_PATH = f"../../logs/{FNAME}/"
 if os.path.exists(LOG_DIR_PATH):
     shutil.rmtree(LOG_DIR_PATH)
     os.makedirs(LOG_DIR_PATH)
@@ -37,7 +37,7 @@ tm = TrainModule(input_shape=np.shape(x_train)[1:], output_shape=OUTPUT_LABEL_CN
                  batch_size=BATCH_SIZE,
                  epochs=EPOCHS)
 
-model = tm.create_avg_pooling_cnn_model()
+model = tm.create_strided_cnn_model()
 model.summary()
 
 tm.model_training(
