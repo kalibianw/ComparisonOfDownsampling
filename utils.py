@@ -15,7 +15,7 @@ class DataModule:
 
     def img_to_npz(self, npz_path: str, color_mode="rgb", dsize=(300, 300), normalized=True):
         """
-        :param npz_path: Path of result npz file path. ex) test.npz
+        :param npz_path: Path of result npz file. ex) test.npz
         :param color_mode: Channel of image color. rgb or gray. default: "rgb'
         :param dsize: Destination size of image. default: (300, 300)
         :param normalized: Image normalization status. default: True
@@ -23,27 +23,24 @@ class DataModule:
         """
         imgs = list()
         labels = list()
-        flist = natsorted(os.listdir(self.DATA_DIR_PATH))
-        fcnt = len(flist)
-        per = fcnt / 100
-        for fidx, fname in enumerate(flist):
-            if color_mode == "rgb":
-                img = cv2.imread(self.DATA_DIR_PATH + fname, flags=cv2.IMREAD_COLOR)
-                img = cv2.resize(img, dsize=dsize)
-            elif color_mode == "gray":
-                img = cv2.imread(self.DATA_DIR_PATH + fname, flags=cv2.IMREAD_GRAYSCALE)
-                img = cv2.resize(img, dsize=dsize)
+        folder_list = natsorted(os.listdir(self.DATA_DIR_PATH))
+        for folder_idx, folder_name in folder_list:
+            flist = natsorted(os.listdir(folder_name))
+            fcnt = len(flist)
+            per = fcnt / 100
+            for file_idx, fname in enumerate(flist):
+                if color_mode == "rgb":
+                    img = cv2.imread(self.DATA_DIR_PATH + folder_name + fname, flags=cv2.IMREAD_COLOR)
+                    img = cv2.resize(img, dsize=dsize)
+                elif color_mode == "gray":
+                    img = cv2.imread(self.DATA_DIR_PATH + folder_name + fname, flags=cv2.IMREAD_GRAYSCALE)
+                    img = cv2.resize(img, dsize=dsize)
 
-            imgs.append(img)
-            if "cat" in fname:
-                labels.append(0)
-            elif "dog" in fname:
-                labels.append(1)
-            else:
-                labels.append(-1)
+                imgs.append(img)
+                labels.append(folder_idx)
 
-            if fidx % int(per) == 0:
-                print(f"{fidx / int(per)}% 완료")
+                if file_idx % int(per) == 0:
+                    print(f"{folder_idx}번 째 폴더 {file_idx / int(per)}% 완료")
 
         if normalized is True:
             imgs = np.array(imgs, dtype=np.float16)
