@@ -268,8 +268,8 @@ class TrainModule:
 
     def model_training(self, model, x_train, y_train, x_valid, y_valid):
         callback_list = [
-            callbacks.ReduceLROnPlateau(factor=0.4, patience=5, verbose=1, min_lr=1e-7),
-            callbacks.EarlyStopping(min_delta=1e-5, patience=30, verbose=1),
+            callbacks.ReduceLROnPlateau(factor=0.5, patience=5, verbose=1, min_lr=1e-8),
+            callbacks.EarlyStopping(min_delta=1e-4, patience=20, verbose=1),
             callbacks.ModelCheckpoint(filepath=self.CKPT_PATH, verbose=1, save_best_only=True, save_weights_only=True),
             callbacks.TensorBoard(log_dir=self.LOG_DIR_PATH)
         ]
