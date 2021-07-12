@@ -10,8 +10,8 @@ x_test = x_test / 255.0
 
 folder_list = os.listdir(MODEL_FOLDER_PATH)
 result_list = list()
-fhandler = open(f"report.txt", 'w')
 for folder_name in folder_list:
+    fhandler = open(f"report_{folder_name}.txt", 'w')
     model_list = os.listdir(MODEL_FOLDER_PATH + folder_name)
     for model_name in model_list:
         model_result_list = list()
@@ -22,9 +22,9 @@ for folder_name in folder_list:
             verbose=1
         )
         pred_ = np.argmax(pred, axis=1)
-        f1 = f1_score(y_true=y_test, y_pred=pred_, average="micro")
-        precision = precision_score(y_true=y_test, y_pred=pred_, average="micro")
-        recall = recall_score(y_true=y_test, y_pred=pred_, average="micro")
+        f1 = f1_score(y_true=y_test, y_pred=pred_, average="macro")
+        precision = precision_score(y_true=y_test, y_pred=pred_, average="macro")
+        recall = recall_score(y_true=y_test, y_pred=pred_, average="macro")
         model_result_list.append(folder_name)
         model_result_list.append(model_name)
         model_result_list.append(f1)
@@ -36,7 +36,7 @@ for folder_name in folder_list:
         fhandler.write(f"{folder_name} - {model_name}\n")
         fhandler.write(report)
         fhandler.write("\n")
-fhandler.close()
+    fhandler.close()
 result_list = np.array(result_list)
 print(result_list)
 print(np.shape(result_list))

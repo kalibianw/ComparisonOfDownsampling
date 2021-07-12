@@ -102,9 +102,9 @@ class TrainModule:
 
         dense_1 = layers.Dense(units=1024, activation=activations.selu, kernel_initializer="he_uniform",
                                kernel_regularizer=regularizers.L2())(flatten)
-        # dropout_1 = layers.Dropout(rate=0.5)(dense_1)
-        # dense_2 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_uniform",
-        #                        kernel_regularizer=regularizers.L2())(dropout_1)
+        dropout_1 = layers.Dropout(rate=0.5)(dense_1)
+        dense_2 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_uniform",
+                               kernel_regularizer=regularizers.L2())(dropout_1)
 
         output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_1)
 
@@ -145,9 +145,9 @@ class TrainModule:
 
         dense_1 = layers.Dense(units=1024, activation=activations.selu, kernel_initializer="he_uniform",
                                kernel_regularizer=regularizers.L2())(flatten)
-        # dropout_1 = layers.Dropout(rate=0.5)(dense_1)
-        # dense_2 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_uniform",
-        #                        kernel_regularizer=regularizers.L2())(dropout_1)
+        dropout_1 = layers.Dropout(rate=0.5)(dense_1)
+        dense_2 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_uniform",
+                               kernel_regularizer=regularizers.L2())(dropout_1)
 
         output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_1)
 
@@ -193,9 +193,9 @@ class TrainModule:
 
         dense_1 = layers.Dense(units=1024, activation=activations.selu, kernel_initializer="he_uniform",
                                kernel_regularizer=regularizers.L2())(flatten)
-        # dropout_1 = layers.Dropout(rate=0.5)(dense_1)
-        # dense_2 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_uniform",
-        #                        kernel_regularizer=regularizers.L2())(dropout_1)
+        dropout_1 = layers.Dropout(rate=0.5)(dense_1)
+        dense_2 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_uniform",
+                               kernel_regularizer=regularizers.L2())(dropout_1)
 
         output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_1)
 
@@ -250,9 +250,9 @@ class TrainModule:
 
         dense_1 = layers.Dense(units=1024, activation=activations.selu, kernel_initializer="he_uniform",
                                kernel_regularizer=regularizers.L2())(flatten)
-        # dropout_1 = layers.Dropout(rate=0.5)(dense_1)
-        # dense_2 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_uniform",
-        #                        kernel_regularizer=regularizers.L2())(dropout_1)
+        dropout_1 = layers.Dropout(rate=0.5)(dense_1)
+        dense_2 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_uniform",
+                               kernel_regularizer=regularizers.L2())(dropout_1)
 
         output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_1)
 
