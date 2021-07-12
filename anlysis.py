@@ -11,7 +11,7 @@ x_test = x_test / 255.0
 folder_list = os.listdir(MODEL_FOLDER_PATH)
 result_list = list()
 for folder_name in folder_list:
-    fhandler = open(f"report_{folder_name}.txt", 'w')
+    fhandler = open(f"result/report_{folder_name}.txt", 'w')
     model_list = os.listdir(MODEL_FOLDER_PATH + folder_name)
     for model_name in model_list:
         model_result_list = list()
