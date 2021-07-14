@@ -4,7 +4,7 @@ import numpy as np
 import shutil
 import os
 
-NPZ_PATH = "D:/AI/npz/cats-dogs/normalized_cats_dogs_rgb.npz"
+NPZ_PATH = "D:/AI/npz/cats-dogs/normalized_cats_dogs_gray.npz"
 OUTPUT_LABEL_CNT = 2
 FNAME = "strided_CNN_large_training_2"
 CKPT_PATH = f"D:/AI/ckpt/COD/{FNAME}.ckpt"
