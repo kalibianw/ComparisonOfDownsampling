@@ -321,7 +321,7 @@ class TrainModuleForLargeModel:
 
         conv2d_1b1 = layers.Conv2D(filters=64, kernel_size=(1, 1), padding="same", activation=activations.selu,
                                    kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2(),
-                                   name="1x1 Convolution")(max_pool_3)
+                                   name="Convolution_1x1")(max_pool_3)
 
         conv2d_4 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                  kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(conv2d_1b1)
@@ -387,7 +387,7 @@ class TrainModuleForLargeModel:
 
         conv2d_1b1 = layers.Conv2D(filters=64, kernel_size=(1, 1), padding="same", activation=activations.selu,
                                    kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2(),
-                                   name="1x1 Convolution")(avg_pool_3)
+                                   name="Convolution_1x1")(avg_pool_3)
 
         conv2d_4 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
                                  kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(conv2d_1b1)
@@ -457,7 +457,7 @@ class TrainModuleForLargeModel:
 
         conv2d_1b1 = layers.Conv2D(filters=64, kernel_size=(1, 1), padding="same", activation=activations.selu,
                                    kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2(),
-                                   name="1x1 Convolution")(conv2d_3_2)
+                                   name="Convolution_1x1")(conv2d_3_2)
 
         conv2d_4 = layers.Conv2D(filters=128, kernel_size=(3, 3), strides=1, padding="same",
                                  activation=activations.selu, kernel_initializer="he_uniform",
@@ -541,7 +541,7 @@ class TrainModuleForLargeModel:
 
         conv2d_1b1 = layers.Conv2D(filters=64, kernel_size=(1, 1), padding="same", activation=activations.selu,
                                    kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2(),
-                                   name="1x1 Convolution")(conv2d_3_2)
+                                   name="Convolution_1x1")(conv2d_3_2)
 
         conv2d_4 = layers.Conv2D(filters=128, kernel_size=(3, 3), strides=1, padding="same",
                                  activation=activations.selu, kernel_initializer="he_uniform",
