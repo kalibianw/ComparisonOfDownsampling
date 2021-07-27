@@ -37,7 +37,7 @@ tm = TrainModule(input_shape=np.shape(x_train)[1:], output_shape=OUTPUT_LABEL_CN
                  batch_size=BATCH_SIZE,
                  epochs=EPOCHS)
 
-model = tm.create_basic_cnn_model_2()
+model = tm.create_obo_cnn_model()
 model.summary()
 
 tm.model_training(
