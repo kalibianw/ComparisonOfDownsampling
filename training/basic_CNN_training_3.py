@@ -7,7 +7,7 @@ import shutil
 import os
 
 OUTPUT_LABEL_CNT = 10
-FNAME = "obo_CNN_training_2"
+FNAME = "basic_CNN_training_3"
 CKPT_PATH = f"D:/AI/ckpt/COD/{FNAME}.ckpt"
 MODEL_PATH = f"D:/AI/model/COD/{FNAME}.h5"
 LOG_DIR_PATH = f"logs/{FNAME}/"
@@ -37,7 +37,7 @@ tm = TrainModule(input_shape=np.shape(x_train)[1:], output_shape=OUTPUT_LABEL_CN
                  batch_size=BATCH_SIZE,
                  epochs=EPOCHS)
 
-model = tm.create_obo_cnn_model_2()
+model = tm.create_basic_cnn_model_3()
 model.summary()
 
 tm.model_training(

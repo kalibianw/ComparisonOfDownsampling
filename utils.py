@@ -314,6 +314,54 @@ class TrainModule:
 
         return model
 
+    def create_basic_cnn_model_3(self):
+        input_layer = layers.Input(shape=self.INPUT_SHAPE)
+
+        conv2d_1 = layers.Conv2D(filters=16, kernel_size=(3, 3), padding="same", activation=activations.selu,
+                                 kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(input_layer)
+        conv2d_1_ = layers.Conv2D(filters=16, kernel_size=(3, 3), padding="same", activation=activations.selu,
+                                  kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(conv2d_1)
+        max_pool_1 = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(conv2d_1_)
+
+        conv2d_2 = layers.Conv2D(filters=32, kernel_size=(3, 3), padding="same", activation=activations.selu,
+                                 kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(max_pool_1)
+        conv2d_2_ = layers.Conv2D(filters=32, kernel_size=(3, 3), padding="same", activation=activations.selu,
+                                  kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(conv2d_2)
+        batch_normalization_1 = layers.BatchNormalization()(conv2d_2_)
+        max_pool_2 = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(batch_normalization_1)
+
+        conv2d_3 = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.selu,
+                                 kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(max_pool_2)
+        conv2d_3_ = layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same", activation=activations.selu,
+                                  kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(conv2d_3)
+        max_pool_3 = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(conv2d_3_)
+
+        conv2d_4 = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
+                                 kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(max_pool_3)
+        conv2d_4_ = layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation=activations.selu,
+                                  kernel_initializer="he_uniform", kernel_regularizer=regularizers.L2())(conv2d_4)
+        batch_normalization_2 = layers.BatchNormalization()(conv2d_4_)
+
+        flatten = layers.Flatten()(batch_normalization_2)
+
+        dense_1 = layers.Dense(units=1024, activation=activations.selu, kernel_initializer="he_uniform",
+                               kernel_regularizer=regularizers.L2())(flatten)
+        dropout_1 = layers.Dropout(rate=0.5)(dense_1)
+        dense_2 = layers.Dense(units=128, activation=activations.selu, kernel_initializer="he_uniform",
+                               kernel_regularizer=regularizers.L2())(dropout_1)
+
+        output_layer = layers.Dense(units=self.OUTPUT_SHAPE, activation=activations.softmax)(dense_2)
+
+        model = models.Model(inputs=[input_layer], outputs=[output_layer])
+
+        model.compile(
+            optimizer=optimizers.Adam(),
+            loss=losses.categorical_crossentropy,
+            metrics=["acc"]
+        )
+
+        return model
+
     def create_obo_cnn_model(self):
         input_layer = layers.Input(shape=self.INPUT_SHAPE)
 
